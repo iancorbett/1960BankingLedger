@@ -21,7 +21,6 @@
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/scopedcss/Components/Layout/NavMenu.razor.rz.scp.css
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/scopedcss/bundle/Ledger.Web.styles.css
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/scopedcss/projectbundle/Ledger.Web.bundle.scp.css
-/Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/s0cuonsdix-khy4lop6wu.gz
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/u3w85yxd7u-bqjiyaj88i.gz
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/v5u927k8um-c2jlpeoesf.gz
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/mywdi8gowf-erw9l3u2r3.gz
@@ -77,3 +76,4 @@
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/Ledger.Web.pdb
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/Ledger.Web.genruntimeconfig.cache
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/ref/Ledger.Web.dll
+/Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/s0cuonsdix-f0cie5qu3m.gz
