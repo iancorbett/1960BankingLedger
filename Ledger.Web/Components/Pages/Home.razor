@@ -1,7 +1,17 @@
 ﻿@page "/"
+@inject NavigationManager Nav  
 
-<PageTitle>Home</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
+<section class="landing-hero">
+  <div class="container text-center py-5">
+    <h1 class="display-4 fw-bold mb-3">1960Ledger</h1>
+    <p class="lead mb-4">Old-school simplicity, modern speed. Track credits & debits with zero fluff.</p>
+    <div class="d-flex justify-content-center gap-3">
+      <a class="btn btn-primary btn-lg px-4" href="/signup">
+        <i class="bi bi-person-plus-fill me-2"></i>Sign Up
+      </a>
+      <a class="btn btn-outline-light btn-lg px-4" href="/login">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Login
+      </a>
+    </div>
+  </div>
+</section>
