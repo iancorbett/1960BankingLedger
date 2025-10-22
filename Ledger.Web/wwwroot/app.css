@@ -58,3 +58,17 @@ h1:focus {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+.nav-link {
+    display: flex;
+    align-items: center;       /* centers icon + text vertically */
+    gap: 0.5rem;               /* adds a little spacing */
+    padding: 0.4rem 0.8rem;    /* consistent clickable zone */
+  }
+  
+  .nav-link i {
+    font-size: 1.2rem;         /* same scale across all icons */
+    line-height: 1;            /* keeps icons perfectly aligned */
+    position: relative;
+    top: 1px;                  /* tiny visual correction */
+  }
