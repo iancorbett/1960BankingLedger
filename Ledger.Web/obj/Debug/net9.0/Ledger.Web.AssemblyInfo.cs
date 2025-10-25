@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ca840f67da3931f04d38e4d1ffa686bc3dee7bbb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+31a1e9f003fef4b2e0087ca8426ca822011c2bc6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
