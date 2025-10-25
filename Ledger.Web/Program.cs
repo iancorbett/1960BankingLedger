@@ -5,6 +5,12 @@ using Ledger.Web.Components;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<LedgerContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
+});
+
+
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
