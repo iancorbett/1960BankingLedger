@@ -15,6 +15,13 @@ namespace Client.Services
             _js = js;
         }
 
+         public async Task<bool> Register(string email, string password)  //for creating a new account
+        {
+            var res = await _http.PostAsJsonAsync("/auth/register", new { email, password });
+            return res.IsSuccessStatusCode;
+        }
+
+
         public async Task<bool> Login(string email, string password)
         {
             var res = await _http.PostAsJsonAsync("/auth/login", new { email, password }); //Sends a POST request to backend /auth/login route with the email and password.
