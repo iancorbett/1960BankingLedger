@@ -5,6 +5,8 @@ using Ledger.Web.Identity;
 using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc; 
 
+public record LoginDto(string Email, string Password, bool RememberMe);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -36,6 +38,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -60,7 +64,6 @@ app.MapPost("/auth/login", async (
 })
 .DisableAntiforgery(); // JSON post from Blazor component
 
-public record LoginDto(string Email, string Password, bool RememberMe);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();                                            
