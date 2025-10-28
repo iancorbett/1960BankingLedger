@@ -54,8 +54,8 @@
             return;
         }
 
-        await SignInManager.SignInAsync(user, isPersistent: true);
-        Nav.NavigateTo("/", forceLoad: true); // ensure cookie binds to circuit
+        
+        Nav.NavigateTo("/Pages/Login", forceLoad: true); // ensure cookie binds to circuit
     }
 
     public class SignupModel
