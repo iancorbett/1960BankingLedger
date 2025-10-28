@@ -1,6 +1,8 @@
 using Ledger.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Ledger.Web.Components;
+using Ledger.Web.Identity;              
+using Microsoft.AspNetCore.Identity; 
 
 var builder = WebApplication.CreateBuilder(args);
 
