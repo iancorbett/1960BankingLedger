@@ -1,5 +1,10 @@
 @page "/Pages/Signup"
 
+@attribute [AllowAnonymous]
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
 <PageTitle>Signup</PageTitle>
 
 <h1>Signup Demo</h1>
