@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AuthDbContext>(o =>
 
 builder.Services
     .AddDefaultIdentity<ApplicationUser>(opts =>                 
+    {
         opts.SignIn.RequireConfirmedAccount = false;
         opts.Password.RequiredLength = 6;
         opts.Password.RequireDigit = false;
