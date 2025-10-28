@@ -27,7 +27,7 @@ builder.Services
     })
     .AddEntityFrameworkStores<AuthDbContext>();
 
-builder.Services.AddAuthentication().AddIdentityCookies();       
+     
 builder.Services.AddAuthorization();  
 
 
