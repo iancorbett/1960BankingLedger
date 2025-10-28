@@ -1,4 +1,8 @@
 @page "/Pages/Login"
+@attribute [AllowAnonymous]
+@inject SignInManager<ApplicationUser> SignInManager
+@inject NavigationManager Nav
+
 
 <PageTitle>Login</PageTitle>
 
