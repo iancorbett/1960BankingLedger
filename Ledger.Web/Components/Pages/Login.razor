@@ -33,3 +33,37 @@
         <div class="text-danger mt-2">@_error</div>
     }
 </EditForm>
+
+@code {
+    private LoginModel _model = new();
+    private string? _error;
+    private bool _busy;
+
+    private async Task HandleLogin()
+    {
+        _busy = true; _error = null;
+
+        var res = await SignInManager.PasswordSignInAsync(
+            userName: _model.Email,
+            password: _model.Password,
+            isPersistent: _model.RememberMe,
+            lockoutOnFailure: false);
+
+        if (!res.Succeeded)
+        {
+            _error = res.IsLockedOut ? "Account locked." : "Invalid email or password.";
+            _busy = false;
+            return;
+        }
+
+        // force full reload so the auth cookie binds to the circuit
+        Nav.NavigateTo("/", forceLoad: true);
+    }
+
+    public class LoginModel
+    {
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required, MinLength(6)] public string Password { get; set; } = "";
+        public bool RememberMe { get; set; } = true;
+    }
+}
