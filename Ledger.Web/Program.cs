@@ -12,6 +12,20 @@ builder.Services.AddDbContext<LedgerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
 });
 
+builder.Services.AddDbContext<AuthDbContext>(o =>           
+    o.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
+
+
+builder.Services
+    .AddDefaultIdentity<ApplicationUser>(opts =>                 
+        opts.SignIn.RequireConfirmedAccount = false;
+        opts.Password.RequiredLength = 6;
+        opts.Password.RequireDigit = false;
+        opts.Password.RequireUppercase = false;
+        opts.Password.RequireNonAlphanumeric = false;
+    })
+    .AddEntityFrameworkStores<AuthDbContext>();
+
 builder.Services.AddAuthentication().AddIdentityCookies();       
 builder.Services.AddAuthorization();  
 
