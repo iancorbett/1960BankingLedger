@@ -5,8 +5,32 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Nav
 
-<PageTitle>Signup</PageTitle>
+<h3>Create your account</h3>
 
-<h1>Signup Demo</h1>
+<EditForm Model="_model" OnValidSubmit="HandleSignup">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<div>Test test 123</div>
+    <div class="mb-3">
+        <label>Email</label>
+        <InputText class="form-control" @bind-Value="_model.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <InputPassword class="form-control" @bind-Value="_model.Password" />
+    </div>
+
+    <div class="mb-3">
+        <label>Confirm Password</label>
+        <InputPassword class="form-control" @bind-Value="_model.ConfirmPassword" />
+    </div>
+
+    <button class="btn btn-primary" type="submit" disabled="_busy">Sign Up</button>
+    <a class="btn btn-link" href="/login">Have an account? Log in</a>
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="text-danger mt-2">@_error</div>
+    }
+</EditForm>
