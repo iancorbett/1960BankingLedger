@@ -34,3 +34,43 @@
         <div class="text-danger mt-2">@_error</div>
     }
 </EditForm>
+
+
+@code {
+    private SignupModel _model = new();
+    private string? _error;
+    private bool _busy;
+
+    private async Task HandleSignup()
+    {
+        _busy = true; _error = null;
+
+        var user = new ApplicationUser { UserName = _model.Email, Email = _model.Email };
+        var result = await UserManager.CreateAsync(user, _model.Password);
+
+        if (!result.Succeeded)
+        {
+            _error = string.Join(" ", result.Errors.Select(e => e.Description));
+            _busy = false;
+            return;
+        }
+
+        // (Optional) auto-login after register
+        await SignInManager.SignInAsync(user, isPersistent: true);
+
+        // IMPORTANT: forceLoad causes a full refresh so the auth cookie is applied to the circuit.
+        Nav.NavigateTo("/", forceLoad: true);
+    }
+
+    public class SignupModel
+    {
+        [Required, EmailAddress]
+        public string Email { get; set; } = "";
+
+        [Required, MinLength(6)]
+        public string Password { get; set; } = "";
+
+        [Required, Compare(nameof(Password), ErrorMessage = "Passwords must match")]
+        public string ConfirmPassword { get; set; } = "";
+    }
+}
