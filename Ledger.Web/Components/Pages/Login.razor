@@ -4,8 +4,32 @@
 @inject NavigationManager Nav
 
 
-<PageTitle>Login</PageTitle>
+<h3>Log in</h3>
 
-<h1>Login Demo</h1>
+<EditForm Model="_model" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
 
-<div>Testing login</div>
+    <div class="mb-3">
+        <label>Email</label>
+        <InputText class="form-control" @bind-Value="_model.Email" />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <InputText class="form-control" type="password" @bind-Value="_model.Password" />
+    </div>
+
+    <div class="form-check mb-3">
+        <InputCheckbox class="form-check-input" @bind-Value="_model.RememberMe" />
+        <label class="form-check-label">Remember me</label>
+    </div>
+
+    <button class="btn btn-primary" type="submit" disabled="@_busy">Log In</button>
+    <a class="btn btn-link" href="/signup">Create account</a>
+
+    @if (!string.IsNullOrWhiteSpace(_error))
+    {
+        <div class="text-danger mt-2">@_error</div>
+    }
+</EditForm>
