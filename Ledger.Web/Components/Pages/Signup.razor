@@ -1,5 +1,4 @@
-@page "/Pages/Signup"
-
+@page "/signup"
 @attribute [AllowAnonymous]
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
@@ -18,15 +17,15 @@
 
     <div class="mb-3">
         <label>Password</label>
-        <InputPassword class="form-control" @bind-Value="_model.Password" />
+        <InputText class="form-control" type="password" @bind-Value="_model.Password" />
     </div>
 
     <div class="mb-3">
         <label>Confirm Password</label>
-        <InputPassword class="form-control" @bind-Value="_model.ConfirmPassword" />
+        <InputText class="form-control" type="password" @bind-Value="_model.ConfirmPassword" />
     </div>
 
-    <button class="btn btn-primary" type="submit" disabled="_busy">Sign Up</button>
+    <button class="btn btn-primary" type="submit" disabled="@_busy">Sign Up</button>
     <a class="btn btn-link" href="/login">Have an account? Log in</a>
 
     @if (!string.IsNullOrWhiteSpace(_error))
@@ -34,7 +33,6 @@
         <div class="text-danger mt-2">@_error</div>
     }
 </EditForm>
-
 
 @code {
     private SignupModel _model = new();
@@ -55,21 +53,14 @@
             return;
         }
 
-        // (Optional) auto-login after register
         await SignInManager.SignInAsync(user, isPersistent: true);
-
-        // IMPORTANT: forceLoad causes a full refresh so the auth cookie is applied to the circuit.
-        Nav.NavigateTo("/", forceLoad: true);
+        Nav.NavigateTo("/", forceLoad: true); // ensure cookie binds to circuit
     }
 
     public class SignupModel
     {
-        [Required, EmailAddress]
-        public string Email { get; set; } = "";
-
-        [Required, MinLength(6)]
-        public string Password { get; set; } = "";
-
+        [Required, EmailAddress] public string Email { get; set; } = "";
+        [Required, MinLength(6)] public string Password { get; set; } = "";
         [Required, Compare(nameof(Password), ErrorMessage = "Passwords must match")]
         public string ConfirmPassword { get; set; } = "";
     }
