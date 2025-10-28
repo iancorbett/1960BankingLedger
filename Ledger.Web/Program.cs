@@ -12,7 +12,11 @@ builder.Services.AddDbContext<LedgerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default"));
 });
 
+builder.Services.AddAuthentication().AddIdentityCookies();       
+builder.Services.AddAuthorization();  
 
+
+builder.Services.AddRazorPages(); 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
