@@ -1,6 +1,6 @@
 @rendermode InteractiveServer
 @page "/Pages/Login"
-@attribute [AllowAnonymous]
+@inject HttpClient Http
 @inject SignInManager<ApplicationUser> SignInManager
 @inject NavigationManager Nav
 
@@ -40,24 +40,25 @@
     private string? _error;
     private bool _busy;
 
-    private async Task HandleLogin()
+   private async Task HandleLogin()
     {
         _busy = true; _error = null;
 
-        var res = await SignInManager.PasswordSignInAsync(
-            userName: _model.Email,
-            password: _model.Password,
-            isPersistent: _model.RememberMe,
-            lockoutOnFailure: false);
+        var url = Nav.ToAbsoluteUri("/auth/login"); 
+        var res = await Http.PostAsJsonAsync(url, new {
+            Email = _model.Email,
+            Password = _model.Password,
+            RememberMe = _model.RememberMe
+        });
 
-        if (!res.Succeeded)
+        if (!res.IsSuccessStatusCode)
         {
-            _error = res.IsLockedOut ? "Account locked." : "Invalid email or password.";
+            _error = "Invalid email or password.";
             _busy = false;
             return;
         }
 
-        // force full reload so the auth cookie binds to the circuit
+        //  Full reload so the new auth cookie binds to the circuit
         Nav.NavigateTo("/", forceLoad: true);
     }
 

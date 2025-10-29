@@ -5,7 +5,7 @@ using Ledger.Web.Identity;
 using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc; 
 
-public record LoginDto(string Email, string Password, bool RememberMe);
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,3 +79,6 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 app.Run();
+
+public record LoginDto(string Email, string Password, bool RememberMe);
+
