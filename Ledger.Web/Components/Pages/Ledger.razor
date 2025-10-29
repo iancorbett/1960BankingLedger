@@ -1,0 +1,147 @@
+@rendermode InteractiveServer
+@page "/ledger"
+@attribute [Authorize]
+
+@using Ledger.Web.Identity
+@using Ledger.Web.Data
+@inject LedgerContext Db
+@inject AuthenticationStateProvider Auth
+@inject NavigationManager Nav
+
+<h3 class="mb-3">Account</h3>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <div class="text-muted">Current balance</div>
+        <div style="font-size:2rem; font-weight:700;">@Balance.ToString("C")</div>
+      </div>
+      <button class="btn btn-outline-secondary" @onclick="Reload">Refresh</button>
+    </div>
+  </div>
+</div>
+
+<h5>Add Transaction</h5>
+<EditForm Model="_form" OnValidSubmit="AddTxn" FormName="addtxn">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+  <div class="row g-2">
+    <div class="col-12 col-md-3">
+      <select class="form-select" @bind="_form.Type">
+        <option value="Credit">Deposit</option>
+        <option value="Debit">Withdraw</option>
+      </select>
+    </div>
+    <div class="col-12 col-md-3">
+      <InputNumber class="form-control" @bind-Value="_form.Amount" />
+    </div>
+    <div class="col-12 col-md-4">
+      <InputText class="form-control" @bind-Value="_form.Memo" placeholder="Memo (optional)" />
+    </div>
+    <div class="col-12 col-md-2">
+      <button class="btn btn-primary w-100" type="submit" disabled="@_busy">Add</button>
+    </div>
+  </div>
+</EditForm>
+
+<hr class="my-4" />
+
+<h5>Recent Transactions</h5>
+
+@if (Txns.Count == 0)
+{
+  <div class="text-muted">No transactions yet.</div>
+}
+else
+{
+  <table class="table table-striped align-middle">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Type</th>
+        <th class="text-end">Amount</th>
+        <th>Memo</th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach (var t in Txns)
+      {
+        <tr>
+          <td>@t.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+          <td>@t.Type</td>
+          <td class="text-end">@((t.Type == TxnType.Debit ? -t.Amount : t.Amount).ToString("C"))</td>
+          <td>@t.Memo</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
+
+@code {
+  private List<Transaction> Txns = new();
+  private decimal Balance;
+  private bool _busy;
+
+  private TxnInput _form = new();
+
+  public class TxnInput
+  {
+    [Required, Range(typeof(decimal), "0.01", "79228162514264337593543950335")]
+    public decimal Amount { get; set; }
+
+    [Required] public TxnType Type { get; set; } = TxnType.Credit;
+
+    [MaxLength(200)] public string? Memo { get; set; }
+  }
+
+  protected override async Task OnInitializedAsync() => await Reload();
+
+  private async Task Reload()
+  {
+    var user = (await Auth.GetAuthenticationStateAsync()).User;
+    if (!(user.Identity?.IsAuthenticated ?? false))
+    {
+      Nav.NavigateTo("/login");
+      return;
+    }
+
+    var uid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value;
+
+    // Load newest first
+    Txns = await Db.Transactions
+      .Where(t => t.UserId == uid)
+      .OrderByDescending(t => t.CreatedAt)
+      .Take(200)
+      .ToListAsync();
+
+    // Balance = sum(credits) - sum(debits)
+    Balance = await Db.Transactions
+      .Where(t => t.UserId == uid)
+      .SumAsync(t => t.Type == TxnType.Credit ? t.Amount : -t.Amount);
+  }
+
+  private async Task AddTxn()
+  {
+    _busy = true;
+    var user = (await Auth.GetAuthenticationStateAsync()).User;
+    var uid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value;
+
+    var t = new Transaction
+    {
+      UserId = uid,
+      Amount = decimal.Round(_form.Amount, 2),
+      Type = _form.Type,
+      Memo = string.IsNullOrWhiteSpace(_form.Memo) ? null : _form.Memo?.Trim(),
+      CreatedAt = DateTime.UtcNow
+    };
+
+    Db.Transactions.Add(t);
+    await Db.SaveChangesAsync();
+
+    // Clear and refresh
+    _form = new();
+    await Reload();
+    _busy = false;
+  }
+}
