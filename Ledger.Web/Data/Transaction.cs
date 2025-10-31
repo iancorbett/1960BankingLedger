@@ -4,15 +4,22 @@ using Ledger.Web.Identity;
 
 namespace Ledger.Web.Data;
 
+// Explicit type for debit/credit selection in the UI
+public enum TxnType
+{
+    Debit = -1,
+    Credit = 1
+}
+
 public class Transaction
 {
     public int Id { get; set; }
 
-    //  Use string because IdentityUser.Id is string (GUID)
+    // IdentityUser.Id is a string (GUID), so keep this as string
     [Required]
     public string UserId { get; set; } = "";
 
-    //  Navigation property to ApplicationUser
+    // Navigation to your Identity user
     [ForeignKey(nameof(UserId))]
     public ApplicationUser? User { get; set; }
 
@@ -25,34 +32,11 @@ public class Transaction
     [MaxLength(200)]
     public string? Memo { get; set; } = "";
 
+    // Store money with fixed precision/scale in Postgres
     [Required, Column(TypeName = "numeric(12,2)")]
     public decimal Amount { get; set; } // +credit, -debit
+
+    // Convenience: derive the type from the sign of Amount (not stored in DB)
+    [NotMapped]
+    public TxnType Type => Amount >= 0 ? TxnType.Credit : TxnType.Debit;
 }
-
-namespace Ledger.Web.Data
-{
-    public enum TxnType
-    {
-        Debit = -1,
-        Credit = 1
-    }
-
-    public class Transaction
-    {
-        public int Id { get; set; }
-
-        [Required] public int UserId { get; set; }
-        public User? User { get; set; }
-
-        [Required] public DateTime Date { get; set; } = DateTime.UtcNow.Date;
-        [Required] public string Payee { get; set; } = "";
-        public string Memo { get; set; } = "";
-
-        // +credit, -debit
-        [Required] public decimal Amount { get; set; }
-
-        // Optional: store explicit type; you can also derive this from Amount
-        public TxnType Type => Amount >= 0 ? TxnType.Credit : TxnType.Debit;
-    }
-}
-
