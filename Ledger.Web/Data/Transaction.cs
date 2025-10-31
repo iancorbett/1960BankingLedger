@@ -28,3 +28,31 @@ public class Transaction
     [Required, Column(TypeName = "numeric(12,2)")]
     public decimal Amount { get; set; } // +credit, -debit
 }
+
+namespace Ledger.Web.Data
+{
+    public enum TxnType
+    {
+        Debit = -1,
+        Credit = 1
+    }
+
+    public class Transaction
+    {
+        public int Id { get; set; }
+
+        [Required] public int UserId { get; set; }
+        public User? User { get; set; }
+
+        [Required] public DateTime Date { get; set; } = DateTime.UtcNow.Date;
+        [Required] public string Payee { get; set; } = "";
+        public string Memo { get; set; } = "";
+
+        // +credit, -debit
+        [Required] public decimal Amount { get; set; }
+
+        // Optional: store explicit type; you can also derive this from Amount
+        public TxnType Type => Amount >= 0 ? TxnType.Credit : TxnType.Debit;
+    }
+}
+
