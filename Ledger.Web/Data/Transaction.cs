@@ -33,7 +33,6 @@ public class Transaction
     }
      [Required, MaxLength(100)] public string Payee { get; set; } = "";
 
-    [MaxLength(200)]
     [MaxLength(200)] public string? Memo { get; set; } = "";
 
     // Store money with fixed precision/scale in Postgres
