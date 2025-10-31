@@ -26,7 +26,7 @@ public class Transaction
     [Required]
     public DateTime Date { get; set; } = DateTime.UtcNow.Date;
 
-    [Required, MaxLength(100)]
+    [NotMapped]
     public string Payee { get; set; } = "";
 
     [MaxLength(200)]
