@@ -26,8 +26,7 @@ public class Transaction
     [Required]
     public DateTime Date { get; set; } = DateTime.UtcNow.Date;
 
-    [NotMapped]
-        public DateTime CreatedAt
+    [NotMapped] public DateTime CreatedAt
     {
         get => Date;
         set => Date = value;
@@ -42,6 +41,12 @@ public class Transaction
     public decimal Amount { get; set; } // +credit, -debit
 
     // Convenience: derive the type from the sign of Amount (not stored in DB)
-    [NotMapped]
-    public TxnType Type => Amount >= 0 ? TxnType.Credit : TxnType.Debit;
+    [NotMapped] public TxnType Type 
+    {
+        get => Amount >= 0 ? TxnType.Credit : TxnType.Debit;
+        set 
+        {
+            Amount = value == TxnType.Credit ? Math.Abs(Amount) : -Math.Abs(Amount);
+        }
+    }
 }
