@@ -32,10 +32,10 @@ public class Transaction
         get => Date;
         set => Date = value;
     }
-    public string Payee { get; set; } = "";
+     [Required, MaxLength(100)] public string Payee { get; set; } = "";
 
     [MaxLength(200)]
-    public string? Memo { get; set; } = "";
+    [MaxLength(200)] public string? Memo { get; set; } = "";
 
     // Store money with fixed precision/scale in Postgres
     [Required, Column(TypeName = "numeric(12,2)")]
