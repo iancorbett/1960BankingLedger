@@ -31,9 +31,6 @@ builder.Services
     })
     .AddEntityFrameworkStores<AuthDbContext>();
 
-    builder.Services
-    .AddAuthentication(IdentityConstants.ApplicationScheme)
-    .AddIdentityCookies();
 
     builder.Services.ConfigureApplicationCookie(o =>
 {
