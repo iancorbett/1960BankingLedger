@@ -34,6 +34,13 @@ builder.Services
     .AddAuthentication(IdentityConstants.ApplicationScheme)
     .AddIdentityCookies();
 
+    builder.Services.ConfigureApplicationCookie(o =>
+{
+    o.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+    o.SlidingExpiration = true;
+    o.ExpireTimeSpan = TimeSpan.FromDays(14);
+});
+
      
 builder.Services.AddAuthorization();  
 
