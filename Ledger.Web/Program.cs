@@ -64,17 +64,22 @@ if (!app.Environment.IsDevelopment())
 
 app.MapPost("/auth/login", async (
     [FromBody] LoginDto dto,
-    SignInManager<ApplicationUser> signInManager) =>
+    SignInManager<ApplicationUser> signInManager,
+    UserManager<ApplicationUser> userManager) =>
 {
+    // Find user by EMAIL only (since users register by email)
+    var user = await userManager.FindByEmailAsync(dto.Email);
+    if (user is null)
+        return Results.BadRequest(new { error = "Invalid email or password" });
+
     var result = await signInManager.PasswordSignInAsync(
-        dto.Email, dto.Password, dto.RememberMe, lockoutOnFailure: false);
+        user, dto.Password, dto.RememberMe, lockoutOnFailure: false);
 
-    if (!result.Succeeded)
-        return Results.BadRequest(new { error = result.IsLockedOut ? "Locked out" : "Invalid credentials" });
-
-    return Results.Ok(new { ok = true });
+    return result.Succeeded
+        ? Results.Ok(new { ok = true })
+        : Results.BadRequest(new { error = result.IsLockedOut ? "Locked out" : "Invalid credentials" });
 })
-.DisableAntiforgery(); // JSON post from Blazor component
+.DisableAntiforgery();
 
 
 app.UseHttpsRedirection();
