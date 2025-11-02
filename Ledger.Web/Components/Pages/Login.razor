@@ -43,14 +43,13 @@
     {
         _busy = true; _error = null;
 
-        var url = Nav.ToAbsoluteUri("/auth/login"); 
-        var res = await Http.PostAsJsonAsync(url, new {
+        var ok = await JS.InvokeAsync<bool>("auth.login", new {
             Email = _model.Email,
             Password = _model.Password,
             RememberMe = _model.RememberMe
         });
 
-        if (!res.IsSuccessStatusCode)
+        if (!ok)
         {
             _error = "Invalid email or password.";
             _busy = false;
