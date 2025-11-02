@@ -1,8 +1,7 @@
 @rendermode InteractiveServer
 @page "/Pages/Login"
-@inject SignInManager<ApplicationUser> SignInManager
+@inject IJSRuntime JS
 @inject NavigationManager Nav
-
 
 <h3>Log in</h3>
 
@@ -39,11 +38,13 @@
     private string? _error;
     private bool _busy;
 
-   private async Task HandleLogin()
+    private async Task HandleLogin()
     {
-        _busy = true; _error = null;
+        _busy = true;
+        _error = null;
 
-        var ok = await JS.InvokeAsync<bool>("auth.login", new {
+        var ok = await JS.InvokeAsync<bool>("auth.login", new
+        {
             Email = _model.Email,
             Password = _model.Password,
             RememberMe = _model.RememberMe
@@ -56,7 +57,7 @@
             return;
         }
 
-        //  Full reload so the new auth cookie binds to the circuit
+        // Redirect to account page (where transactions show)
         Nav.NavigateTo("/Account", forceLoad: true);
     }
 
