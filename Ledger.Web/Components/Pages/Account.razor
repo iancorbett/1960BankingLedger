@@ -69,9 +69,9 @@ else
       @foreach (var t in Txns)
       {
         <tr>
-          <td>@t.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+          <td>@t.Date.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td> 
           <td>@t.Type</td>
-          <td class="text-end">@((t.Type == TxnType.Debit ? -t.Amount : t.Amount).ToString("C"))</td>
+          <td class="text-end">@t.Amount.ToString("C")</td>  
           <td>@t.Memo</td>
         </tr>
       }
