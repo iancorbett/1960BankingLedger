@@ -113,15 +113,14 @@ else
     // Load newest first
     Txns = await Db.Transactions
       .Where(t => t.UserId == uid)
-      .OrderByDescending(t => t.CreatedAt)
+      .OrderByDescending(t => t.Date)          // was CreatedAt
       .Take(200)
       .ToListAsync();
 
-    // Balance = sum(credits) - sum(debits)
     Balance = await Db.Transactions
       .Where(t => t.UserId == uid)
-      .SumAsync(t => t.Type == TxnType.Credit ? t.Amount : -t.Amount);
-  }
+      .SumAsync(t => t.Amount);    
+      }
 
   private async Task AddTxn()
   {
