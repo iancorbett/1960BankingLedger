@@ -256,3 +256,4 @@
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/Ledger.Web.pdb
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/Ledger.Web.genruntimeconfig.cache
 /Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/ref/Ledger.Web.dll
+/Users/iancorbett/Desktop/1960BankingLedger/Ledger.Web/obj/Debug/net9.0/compressed/hz1tns8ksi-ho513203jy.gz
