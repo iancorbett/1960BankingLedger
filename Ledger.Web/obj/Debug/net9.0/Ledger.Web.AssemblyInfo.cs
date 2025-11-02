@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+682cdcd8515c6eef34e037f5b60c02ca38f23ec8")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+16b5210dd068aa9b76b8df0e56eada87f8984a87")]
 [assembly: System.Reflection.AssemblyProductAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Ledger.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
