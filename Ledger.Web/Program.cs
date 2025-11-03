@@ -126,6 +126,27 @@ app.MapRazorComponents<App>()
         }
     }
 
+        // 2) Invoke COBOL program
+    var exe = Path.Combine(AppContext.BaseDirectory, "cobol/bin/ledger_report");
+    if (!System.IO.File.Exists(exe))
+        return Results.Problem("COBOL binary not found. Build it with cobol/build.sh", statusCode: 500);
+
+    var psi = new System.Diagnostics.ProcessStartInfo
+    {
+        FileName = exe,
+        ArgumentList = { csvPath, outPath },
+        RedirectStandardOutput = true,
+        RedirectStandardError = true
+    };
+    using var proc = System.Diagnostics.Process.Start(psi)!;
+    var stderr = await proc.StandardError.ReadToEndAsync();
+    await proc.WaitForExitAsync();
+    if (proc.ExitCode != 0)
+        return Results.Problem($"COBOL error:\n{stderr}", statusCode: 500);
+
+})
+.RequireAuthorization();
+
 app.Run();
 
 public record LoginDto(string Email, string Password, bool RememberMe);
