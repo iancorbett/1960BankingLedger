@@ -92,65 +92,7 @@ app.MapRazorPages();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
-    app.MapGet("/reports/statement", async (
-    HttpContext http,
-    LedgerContext db,
-    AuthenticationStateProvider auth) =>
-{
-    var state = await auth.GetAuthenticationStateAsync();
-    var user = state.User;
-    if (!(user.Identity?.IsAuthenticated ?? false))
-        return Results.Unauthorized();
-
-    var uid = user.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value;
-
-        // 1) Write CSV for this user
-    var txns = await db.Transactions
-        .Where(t => t.UserId == uid)
-        .OrderBy(t => t.Date)
-        .ToListAsync();
-
-    var tmp = Path.Combine(Path.GetTempPath(), $"ledger_{uid}_{Guid.NewGuid():N}");
-    Directory.CreateDirectory(tmp);
-    var csvPath = Path.Combine(tmp, "transactions.csv");
-    var outPath = Path.Combine(tmp, "statement.txt");
-
-    await using (var sw = new StreamWriter(csvPath))
-    {
-        await sw.WriteLineAsync("Date,Type,Amount,Memo,UserId");
-        foreach (var t in txns)
-        {
-            var type = t.Type == TxnType.Credit ? "Credit" : "Debit";
-            var memo = (t.Memo ?? "").Replace("\"", "'");
-            await sw.WriteLineAsync($"{t.Date:yyyy-MM-dd},{type},{t.Amount},{memo},{t.UserId}");
-        }
-    }
-
-        // 2) Invoke COBOL program
-    var exe = Path.Combine(AppContext.BaseDirectory, "cobol/bin/ledger_report");
-    if (!System.IO.File.Exists(exe))
-        return Results.Problem("COBOL binary not found. Build it with cobol/build.sh", statusCode: 500);
-
-    var psi = new System.Diagnostics.ProcessStartInfo
-    {
-        FileName = exe,
-        ArgumentList = { csvPath, outPath },
-        RedirectStandardOutput = true,
-        RedirectStandardError = true
-    };
-    using var proc = System.Diagnostics.Process.Start(psi)!;
-    var stderr = await proc.StandardError.ReadToEndAsync();
-    await proc.WaitForExitAsync();
-    if (proc.ExitCode != 0)
-        return Results.Problem($"COBOL error:\n{stderr}", statusCode: 500);
-
-        
-    // 3) Return the text report
-    var txt = await System.IO.File.ReadAllBytesAsync(outPath);
-    return Results.File(txt, "text/plain", fileDownloadName: "statement.txt");
-
-})
-.RequireAuthorization();
+    
 
 app.Run();
 
