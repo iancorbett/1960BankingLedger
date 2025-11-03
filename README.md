@@ -47,3 +47,11 @@ Visit https://localhost:5001
  (or whatever port it logs).
 
  ---
+
+ ## Authentication
+
+Identity-based login (/auth/login endpoint)
+
+Password policy: 6 chars minimum, no uppercase/digit/symbol requirements (easy local dev)
+
+Cookie-based session; persists 14 days
