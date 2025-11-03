@@ -1,3 +1,12 @@
+       01  OUT-REC            PIC X(120).
+       01  DASH-80            PIC X(80)  VALUE ALL "-".
+       01  WS-GAP-50          PIC X(50)  VALUE ALL SPACES.
+
+       01  TOT-CREDIT-D       PIC -ZZ,ZZZ,ZZ9.99.
+       01  TOT-DEBIT-D        PIC -ZZ,ZZZ,ZZ9.99.
+       01  RUN-BAL-D          PIC -ZZ,ZZZ,ZZ9.99.
+
+       
        *> ledger_report.cob
        *> Usage:  ledger_report <input.csv> <output.txt>
        IDENTIFICATION DIVISION.
