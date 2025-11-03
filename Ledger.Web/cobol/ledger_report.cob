@@ -73,14 +73,11 @@
                PERFORM PARSE-CSV
 
                *> Convert amount text to numeric (signed cents with dot)
-               MOVE 0 TO AMOUNT
-               UNSTRING F-AMOUNT-TXT DELIMITED BY "."
-                   INTO F-AMOUNT-TXT, SPACES
-               END-UNSTRING
-               INSPECT F-AMOUNT-TXT
-                   REPLACING ALL "," BY ""
-               *> Read signed value (e.g., -12.34 came as -12,34 already dot-stripped earlier)
-               MOVE FUNCTION NUMVAL (F-AMOUNT-TXT) TO AMOUNT
+            MOVE 0 TO AMOUNT.
+            INSPECT F-AMOUNT-TXT REPLACING ALL "," BY "".
+            MOVE FUNCTION NUMVAL(F-AMOUNT-TXT) TO AMOUNT.
+               
+               
 
                IF CUR-DATE NOT = F-DATE AND CUR-DATE NOT = SPACES
                    PERFORM FLUSH-DAY
