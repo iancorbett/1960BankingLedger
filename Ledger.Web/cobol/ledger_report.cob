@@ -11,7 +11,7 @@
            SELECT OUTFILE ASSIGN TO DYNAMIC outfile-name
                ORGANIZATION LINE SEQUENTIAL.
 
-        DATA DIVISION.
+       DATA DIVISION.
        FILE SECTION.
        FD  INFILE.
        01  IN-REC                 PIC X(512).
@@ -19,7 +19,7 @@
        FD  OUTFILE.
        01  OUT-REC                PIC X(256).
 
-        WORKING-STORAGE SECTION.
+       WORKING-STORAGE SECTION.
        77  infile-name            PIC X(256).
        77  outfile-name           PIC X(256).
        77  ARG-COUNT              PIC 9(4) COMP-5.
@@ -44,8 +44,8 @@
        01  DASH-80                PIC X(80) VALUE ALL "-".
        01  DASH-60                PIC X(60) VALUE ALL "-".
 
-        PROCEDURE DIVISION.
-        MAIN.
+       PROCEDURE DIVISION.
+       MAIN.
            ACCEPT ARG-COUNT FROM ARGUMENT-NUMBER
            IF ARG-COUNT NOT = 2
                 DISPLAY "Usage: ledger_report <input.csv> <output.txt>"
@@ -127,7 +127,6 @@
            CLOSE INFILE OUTFILE
            GOBACK.
 
-
        WRITE-HEADER.
            IF HEADER-WRITTEN = "Y" EXIT PARAGRAPH END-IF
            MOVE "1960Ledger - Daily Statement" TO OUT-REC
@@ -141,7 +140,7 @@
            MOVE "Y" TO HEADER-WRITTEN
            .
 
-                  FLUSH-DAY.
+       FLUSH-DAY.
            STRING
               CUR-DATE DELIMITED BY SIZE
               "  "
