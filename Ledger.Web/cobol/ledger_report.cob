@@ -126,3 +126,17 @@
 
            CLOSE INFILE OUTFILE
            GOBACK.
+
+
+       WRITE-HEADER.
+           IF HEADER-WRITTEN = "Y" EXIT PARAGRAPH END-IF
+           MOVE "1960Ledger - Daily Statement" TO OUT-REC
+           WRITE OUT-REC
+           MOVE DASH-80 TO OUT-REC
+           WRITE OUT-REC
+           MOVE "Date        Credits        Debits         Day Net     Run Bal" TO OUT-REC
+           WRITE OUT-REC
+           MOVE DASH-80 TO OUT-REC
+           WRITE OUT-REC
+           MOVE "Y" TO HEADER-WRITTEN
+           .
