@@ -23,7 +23,7 @@ Styling	Bootstrap 5 (default Blazor template)
 ## Setup
 
 **1. Clone & restore**
-git clone https://github.com/korbskilabs/1960Ledger.git
+git clone https://github.com/iancorbett/1960Ledger.git
 cd 1960Ledger/Ledger.Web
 dotnet restore
 
