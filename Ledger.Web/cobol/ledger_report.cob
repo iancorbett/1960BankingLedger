@@ -104,3 +104,25 @@
            IF CUR-DATE NOT = SPACES
                PERFORM FLUSH-DAY
            END-IF
+
+       FINISH-REPORT.
+           MOVE DASH-80 TO OUT-REC
+           WRITE OUT-REC
+           STRING
+              "TOTAL CREDITS: ", FUNCTION TRIM(FUNCTION NUMVAL-C (RUN-CREDIT)), SPACES-50
+              DELIMITED BY SIZE INTO OUT-REC
+           END-STRING
+           WRITE OUT-REC
+           STRING
+              "TOTAL DEBITS : ", FUNCTION TRIM(FUNCTION NUMVAL-C (RUN-DEBIT))
+              DELIMITED BY SIZE INTO OUT-REC
+           END-STRING
+           WRITE OUT-REC
+           STRING
+              "ENDING BAL   : ", FUNCTION TRIM(FUNCTION NUMVAL-C (RUN-BAL))
+              DELIMITED BY SIZE INTO OUT-REC
+           END-STRING
+           WRITE OUT-REC
+
+           CLOSE INFILE OUTFILE
+           GOBACK.
