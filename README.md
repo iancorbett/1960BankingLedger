@@ -6,6 +6,8 @@ Ledger lets users securely log in, track transactions, and visualize their balan
 
 ---
 
+<img width="1683" height="920" alt="Screenshot 2025-11-02 at 10 33 11 PM" src="https://github.com/user-attachments/assets/57169bbd-b625-4737-b19a-949277a55433" />
+
 ## Tech Stack
 Layer	Technology
 Frontend	Blazor Server (Razor Components, Interactive Mode)
