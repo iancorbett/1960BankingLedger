@@ -144,6 +144,11 @@ app.MapRazorComponents<App>()
     if (proc.ExitCode != 0)
         return Results.Problem($"COBOL error:\n{stderr}", statusCode: 500);
 
+        
+    // 3) Return the text report
+    var txt = await System.IO.File.ReadAllBytesAsync(outPath);
+    return Results.File(txt, "text/plain", fileDownloadName: "statement.txt");
+
 })
 .RequireAuthorization();
 
