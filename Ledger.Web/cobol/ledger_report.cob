@@ -43,3 +43,64 @@
        01  SPACES-50              PIC X(50) VALUE ALL " ".
        01  DASH-80                PIC X(80) VALUE ALL "-".
        01  DASH-60                PIC X(60) VALUE ALL "-".
+
+        PROCEDURE DIVISION.
+        MAIN.
+           ACCEPT ARG-COUNT FROM ARGUMENT-NUMBER
+           IF ARG-COUNT NOT = 2
+                DISPLAY "Usage: ledger_report <input.csv> <output.txt>"
+                STOP RUN
+           END-IF
+           ACCEPT infile-name  FROM ARGUMENT-VALUE
+           ACCEPT outfile-name FROM ARGUMENT-VALUE
+
+           OPEN INPUT INFILE
+                OUTPUT OUTFILE
+
+           PERFORM WRITE-HEADER
+
+           *> Skip header row
+           READ INFILE
+                AT END GO TO FINISH-REPORT
+           END-READ
+
+           PERFORM UNTIL 1 = 2
+               READ INFILE
+                   AT END EXIT PERFORM
+               END-READ
+
+               MOVE IN-REC TO WS-LINE
+               PERFORM PARSE-CSV
+
+               *> Convert amount text to numeric (signed cents with dot)
+               MOVE 0 TO AMOUNT
+               UNSTRING F-AMOUNT-TXT DELIMITED BY "."
+                   INTO F-AMOUNT-TXT, SPACES
+               END-UNSTRING
+               INSPECT F-AMOUNT-TXT
+                   REPLACING ALL "," BY ""
+               *> Read signed value (e.g., -12.34 came as -12,34 already dot-stripped earlier)
+               MOVE FUNCTION NUMVAL (F-AMOUNT-TXT) TO AMOUNT
+
+               IF CUR-DATE NOT = F-DATE AND CUR-DATE NOT = SPACES
+                   PERFORM FLUSH-DAY
+               END-IF
+
+               IF CUR-DATE = SPACES
+                   MOVE F-DATE TO CUR-DATE
+               END-IF
+
+               IF F-TYPE = "Credit"
+                   ADD AMOUNT TO DAY-CREDIT
+                   ADD AMOUNT TO RUN-CREDIT
+                   ADD AMOUNT TO RUN-BAL
+               ELSE
+                   ADD AMOUNT TO DAY-DEBIT
+                   SUBTRACT AMOUNT FROM RUN-DEBIT *> AMOUNT will be negative for debit if you export signed
+                   ADD AMOUNT TO RUN-BAL
+               END-IF
+           END-PERFORM
+
+           IF CUR-DATE NOT = SPACES
+               PERFORM FLUSH-DAY
+           END-IF
