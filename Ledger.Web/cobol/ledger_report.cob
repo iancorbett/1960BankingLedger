@@ -140,3 +140,42 @@
            WRITE OUT-REC
            MOVE "Y" TO HEADER-WRITTEN
            .
+
+                  FLUSH-DAY.
+           STRING
+              CUR-DATE DELIMITED BY SIZE
+              "  "
+              FUNCTION TRIM(FUNCTION NUMVAL-C (DAY-CREDIT))  DELIMITED BY SIZE
+              SPACES
+              FUNCTION TRIM(FUNCTION NUMVAL-C (DAY-DEBIT))   DELIMITED BY SIZE
+              SPACES
+              FUNCTION TRIM(FUNCTION NUMVAL-C (DAY-CREDIT + DAY-DEBIT)) DELIMITED BY SIZE
+              SPACES
+              FUNCTION TRIM(FUNCTION NUMVAL-C (RUN-BAL))     DELIMITED BY SIZE
+               INTO OUT-REC
+           END-STRING
+           WRITE OUT-REC
+           MOVE CUR-DATE TO CUR-DATE
+           MOVE 0 TO DAY-CREDIT DAY-DEBIT
+           MOVE F-DATE TO CUR-DATE
+           .
+
+       PARSE-CSV.
+           *> Expect CSV header: Date,Type,Amount,Memo,UserId
+           MOVE 1 TO WS-PTR
+           MOVE SPACES TO F-DATE F-TYPE F-AMOUNT-TXT F-MEMO F-USERID
+
+           UNSTRING WS-LINE DELIMITED BY ","
+               INTO F-DATE
+                    F-TYPE
+                    F-AMOUNT-TXT
+                    F-MEMO
+                    F-USERID
+           END-UNSTRING
+           *> strip quotes if any
+           INSPECT F-DATE      REPLACING ALL QUOTE BY SPACE
+           INSPECT F-TYPE      REPLACING ALL QUOTE BY SPACE
+           INSPECT F-AMOUNT-TXT REPLACING ALL QUOTE BY SPACE
+           INSPECT F-MEMO      REPLACING ALL QUOTE BY SPACE
+           INSPECT F-USERID    REPLACING ALL QUOTE BY SPACE
+           .
