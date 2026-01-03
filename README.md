@@ -61,7 +61,7 @@ Cookie-based session; persists 14 days
 ---
 
 ## Future Development
-Goal	Description
+Goal	Description (Coming Soon)
 COBOL Integration (Prototype)	Re-introduce a COBOL micro-service to process ledger reports and generate vintage-style statements — bridging 1960 tech × 2025 stack ⚙️
 CSV & PDF Exports	Let users export transaction histories directly.
 Budget Analytics	AI-assisted insights for spending patterns.
